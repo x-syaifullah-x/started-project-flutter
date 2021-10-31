@@ -1,0 +1,65 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace "com.example.test"
+
+    // compileSdk flutter.compileSdkVersion
+    compileSdk build_versions.compile_sdk
+    // ndkVersion flutter.ndkVersion
+    ndkVersion build_versions.ndk
+    buildToolsVersion build_versions.build_tools
+
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_21.toString()
+    }
+
+    defaultConfig {
+        minSdk flutter.minSdkVersion
+        targetSdk build_versions.compile_sdk
+        versionCode flutter.versionCode
+        versionName flutter.versionName
+
+        resConfigs "en"
+    }
+
+    signingConfigs {
+       def home_dir = System.getProperty("user.home")
+       def store_file = file("debug.keystore")
+       def store_password = "android"
+       def key_alias = "androiddebugkey"
+       def key_password = "android"
+
+       release {
+           storeFile store_file
+           storePassword store_password
+           keyAlias key_alias
+           keyPassword key_password
+       }
+   }
+
+    buildTypes {
+        release {
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+            minifyEnabled true
+            debuggable false
+            jniDebuggable false
+            signingConfig signingConfigs.debug
+        }
+    }
+}
+
+flutter {
+    source "../.."
+}
+
+dependencies {}

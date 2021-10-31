@@ -1,0 +1,29 @@
+def build_versions = [:]
+build_versions.min_sdk = 21 // android lollipop ( 5.0 )
+build_versions.target_sdk = 36 // android latest
+build_versions.compile_sdk = build_versions.target_sdk
+build_versions.build_tools = "36.0.0"
+build_versions.ndk = "29.0.14206865"
+ext.build_versions = build_versions
+
+ext {
+    vGradle = "8.10.0"
+    vKotlin = "2.2.0"
+}
+
+def addRepos(RepositoryHandler handler) {
+    handler.gradlePluginPortal()
+    handler.google()
+    handler.mavenCentral()
+    handler.maven {
+        url "https://jcenter.bintray.com"
+        url "https://oss.sonatype.org/content/repositories/snapshots"
+        url "https://jitpack.io"
+    }
+    handler.mavenLocal()
+    handler.mavenLocal {
+        it.url("${rootDir}/.m2/repository")
+    }
+}
+
+ext.addRepos = this.&addRepos
